@@ -1,5 +1,9 @@
 # barikata
 
+# Please wait npm publish...
+
+# npmへの公開は少しお待ちください
+
 # Notice
 
 ## このpackageはReact-hook-formを使うと、より堅牢になります。理由はname属性に間違った値を入れることを防ぐことができるためです。
