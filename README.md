@@ -88,3 +88,53 @@ export async function addPostAction(formData: FormData) {
     // other logics...
 }
 ```
+
+## How to use
+
+```ts
+import { z } from "zod";
+import { zFormGetter } from "barikata";
+
+const PostSchema = z.object({
+  title: z.string(),
+  content: z.string(),
+  tags: z.array(z.string()).optional(),
+});
+
+export async function addPostAction(formData: FormData) {
+  const { parsed, safeParse, field } = zFormGetter(formData, PostSchema);
+
+  // 1. parsed で全体を一度に検証
+  if (!parsed.success) {
+    // validation error handling
+    return {
+      success: false,
+      errors: parsed.error.format(),
+    };
+  }
+
+  // 2. 型安全な field() で個別フィールドを取得
+  const title = field("title");
+  const content = field("content");
+  const tags = field("tags");
+
+  // 3. safeParse() でオプションを指定して再検証
+  const safeResult = safeParse({ jitless: false });
+
+  return {
+    success: true,
+    data: parsed.data,
+    title,
+    content,
+    tags,
+    safeResult,
+  };
+}
+```
+
+### What it gives you
+
+- `parsed` は `z.ZodSafeParseResult` なので全体検証の成否とパース済みデータを扱えます。
+- `field("key")` はスキーマで定義したキーのみを受け付け、型に従った値を返します。
+- `safeParse()` は `FormData` を `Zod` によって再解析し、`jitless` などのオプションを指定できます。
+- `tags` のような配列フィールドでも `FormData.getAll()` を自動で使います。
