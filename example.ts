@@ -1,5 +1,5 @@
 import z from "zod";
-import { zFormGetter } from ".";
+import { zFormGetter } from "./src";
 
 const formData = new FormData();
 
@@ -29,15 +29,13 @@ const isObjectEqualShallow = (
 
 function postAction(formData: FormData) {
   const { field, parsed, safeParse } = zFormGetter(formData, PostSchema);
-  console.log("Success Pattern");
   console.log("title", field("title"));
   console.log("content", field("content"));
 
-  console.log("Error Pattern");
   //   This is typo pattern.
-  console.log("tytle", field("tytle"));
+  // console.log("tytle", field("tytle"));
   //   This is different key error pattern.
-  console.log("body", field("body"));
+  // console.log("body", field("body"));
 
   console.log("What safeParse returns?", parsed);
 

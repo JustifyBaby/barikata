@@ -142,3 +142,7 @@ export async function addPostAction(formData: FormData) {
 - `field("key")` はスキーマで定義したキーのみを受け付け、型に従った値を返します。
 - `safeParse()` は `FormData` を `Zod` によって再解析し、`jitless` などのオプションを指定できます。
 - `tags` のような配列フィールドでも `FormData.getAll()` を自動で使います。
+
+# LICENSE
+
+MIT

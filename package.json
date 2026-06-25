@@ -1,14 +1,28 @@
 {
   "name": "barikata",
-  "module": "index.ts",
-  "type": "module",
-  "devDependencies": {
-    "@types/bun": "latest"
+  "description": "A simple TypeScript library for validating and parsing data using Zod.",
+  "version": "0.0.1",
+  "author": "Justify Baby",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JustifyBaby/barikata.git"
   },
-  "peerDependencies": {
-    "typescript": "^5"
+  "main": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "build:js": "bun build ./src/index.ts --outdir ./dist",
+    "build:types": "bunx tsc",
+    "build": "bun run build:js && bun run build:types"
   },
   "dependencies": {
     "zod": "^4.4.3"
-  }
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "module": "index.ts",
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "type": "module"
 }
