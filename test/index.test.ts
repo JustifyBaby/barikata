@@ -1,8 +1,9 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import z from "zod";
 import { zFormGetter } from "../src/index";
+import html from "./index.test.html?raw";
 
-const TEST_META = Object.freeze({
+export const TEST_META = Object.freeze({
   username: "J.Doe",
   email: "foobar@example.com",
   private: "EXTRA Private mode",
@@ -10,24 +11,38 @@ const TEST_META = Object.freeze({
   priory: "Fast priory Browsing",
 });
 
+const is_TEST_META_key = (key: string): key is keyof typeof TEST_META => {
+  return Object.keys(TEST_META).includes(key);
+};
+
 describe("Raw FormData Test", () => {
   let fd: FormData;
-  let form: HTMLFormElement;
+  let form: HTMLFormElement | null;
 
   beforeEach(() => {
-    document.body.innerHTML = `
-      <form id="form">
-        <input name="username" value="${TEST_META.username}" />
-        <input name="email" value="${TEST_META.email}" />
+    document.body.innerHTML = html;
 
-        <input type="checkbox" name="options" value="${TEST_META.private}" checked />
-        <input type="checkbox" name="options" value="${TEST_META.music}" checked />
-        <input type="checkbox" name="options" value="${TEST_META.priory}" />
-      </form>
+    Object.keys(TEST_META).forEach((key) => {
+      const input = document.getElementById(key);
 
-    `;
+      if (!(input instanceof HTMLInputElement)) {
+        console.log("input is not <INPUT />");
+        return;
+      }
+      if (!is_TEST_META_key(key)) {
+        console.log(key + " is not include");
+        return;
+      }
 
-    form = document.querySelector("form")!;
+      input.value = TEST_META[key];
+    });
+
+    form = document.querySelector("form");
+    if (!form) {
+      console.log("Get form failed");
+      return;
+    }
+
     fd = new FormData(form);
   });
 
@@ -44,9 +59,8 @@ describe("Raw FormData Test", () => {
       options: z.string().array(),
     });
     const { parsed: user } = zFormGetter(fd, UserSchema);
-
     expect(user.success).toBe(true);
-    expect(user.data).toBe<z.infer<typeof UserSchema>>({
+    expect(user.data).toEqual<z.infer<typeof UserSchema>>({
       username: TEST_META.username,
       email: TEST_META.email,
       options: [TEST_META.private, TEST_META.music],
