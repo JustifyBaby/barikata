@@ -30,8 +30,8 @@ function isZodArraySchema(schema: z.ZodTypeAny): boolean {
   }
 
   // z.preprocess() や z.transform() などのEffectsの裏にあるスキーマをチェック
-  if (schema._def && "schema" in schema._def) {
-    return isZodArraySchema((schema._def as { schema: z.ZodTypeAny }).schema);
+  if (schema.def && "schema" in schema.def) {
+    return isZodArraySchema((schema.def as { schema: z.ZodTypeAny }).schema);
   }
   return false;
 }

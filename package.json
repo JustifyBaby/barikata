@@ -20,7 +20,10 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/jest": "^30.0.0",
+    "happy-dom": "^20.10.6",
+    "vitest": "^4.1.9"
   },
   "module": "dist/index.js",
   "main": "dist/index.ts",
